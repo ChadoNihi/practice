@@ -1,0 +1,4 @@
+.img-to-click, .counter, .name {display: inline-block;}
+.img-to-click:nth-child(3), .counter:nth-child(5), .name:first-child {float: left;}
+.img-to-click:nth-child(4), .counter:last-child, .name:nth-child(2) {float: right;}
+.img-to-click:nth-child(3) {clear: right;}

@@ -1,0 +1,7 @@
+.titles {position:relative;}
+.titles > li {display:inline-block;}
+.title {padding:1em;}
+.title:hover {background-color: #aaa;}
+.img-w-counter {position:absolute; left:-6000px;max-width: 100%;}
+.titles li:first-child .img-w-counter {left:10px;}
+.titles li:first-child .title {font-weight: bold;}
