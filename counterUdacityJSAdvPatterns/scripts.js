@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		hcounters[currImg].innerHTML = "You've clicked <span>1</span> times!";
 
 		removeEListener(imgEl, 'click', handler);
-		addEListener(imgEl, 'click', function(){countClicks();})
+		addEListener(imgEl, 'click', function(){countClicks();});
 	}
 
 	function countClicks () {
@@ -41,17 +41,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	function addEListener (elem, evName, f, useCptr) {
 		if (elem.addEventListener) {   // For all major browsers, except IE 8 and earlier
-			var useCptr = useCptr && true;
-			elem.addEventListener(evName, f, useCptr);
+			var cptr = useCptr && true;
+			elem.addEventListener(evName, f, cptr);
 		} else if (elem.attachEvent) { // For IE 8 and earlier versions
 			elem.attachEvent('on'+evName, f);
 		}
 	}
 
-	function removeEListener (elem, evName, f) {
+	function removeEListener (elem, evName, f, useCptr) {
 		if (elem.removeEventListener) {   // For all major browsers, except IE 8 and earlier
-			var useCptr = useCptr && true;
-			elem.removeEventListener(evName, f, useCptr);
+			var cptr = useCptr && true;
+			elem.removeEventListener(evName, f, cptr);
 		} else if (elem.detachEvent) { // For IE 8 and earlier versions
 			elem.detachEvent('on'+evName, f);
 		}
