@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	function addEListener (elem, evName, f, useCptr) {
 		if (elem.addEventListener) {   // For all major browsers, except IE 8 and earlier
-			var cptr = useCptr && true;
-			elem.addEventListener(evName, f, cptr);
+			useCptr = useCptr && true;
+			elem.addEventListener(evName, f, useCptr);
 		} else if (elem.attachEvent) { // For IE 8 and earlier versions
 			elem.attachEvent('on'+evName, f);
 		}
@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	function removeEListener (elem, evName, f, useCptr) {
 		if (elem.removeEventListener) {   // For all major browsers, except IE 8 and earlier
-			var cptr = useCptr && true;
-			elem.removeEventListener(evName, f, cptr);
+			useCptr = useCptr && true;
+			elem.removeEventListener(evName, f, useCptr);
 		} else if (elem.detachEvent) { // For IE 8 and earlier versions
 			elem.detachEvent('on'+evName, f);
 		}
