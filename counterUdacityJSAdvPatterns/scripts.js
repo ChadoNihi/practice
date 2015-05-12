@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+if (document.addEventListener)
+	document.addEventListener("DOMContentLoaded", main);
+else
+	window.attachEvent('load', main); //IE8 and earlier
+
+function main(event) {
 	var currImg = 0; //from 0
 	var titlesStrs = ["Big city at dawn", "Huge green hedge", "Somewhere in NZ", "Mountain road", "East-Indian landscape"];
 	var imgBlocks = document.getElementsByClassName('img-w-counter');
@@ -38,22 +43,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function countClicks () {
 		hcounters[currImg].getElementsByTagName('span')[0].innerHTML = ++window["clCount"+currImg];
 	}
+}
 
-	function addEListener (elem, evName, f, useCptr) {
-		if (elem.addEventListener) {   // For all major browsers, except IE 8 and earlier
-			useCptr = useCptr && true;
-			elem.addEventListener(evName, f, useCptr);
-		} else if (elem.attachEvent) { // For IE 8 and earlier versions
-			elem.attachEvent('on'+evName, f);
-		}
+function addEListener (elem, evName, f, useCptr) {
+	if (elem.addEventListener) {   // For all major browsers, except IE 8 and earlier
+		useCptr = useCptr && true;
+		elem.addEventListener(evName, f, useCptr);
+	} else if (elem.attachEvent) { // For IE 8 and earlier versions
+		elem.attachEvent('on'+evName, f);
 	}
+}
 
-	function removeEListener (elem, evName, f, useCptr) {
-		if (elem.removeEventListener) {   // For all major browsers, except IE 8 and earlier
-			useCptr = useCptr && true;
-			elem.removeEventListener(evName, f, useCptr);
-		} else if (elem.detachEvent) { // For IE 8 and earlier versions
-			elem.detachEvent('on'+evName, f);
-		}
+function removeEListener (elem, evName, f, useCptr) {
+	if (elem.removeEventListener) {   // For all major browsers, except IE 8 and earlier
+		useCptr = useCptr && true;
+		elem.removeEventListener(evName, f, useCptr);
+	} else if (elem.detachEvent) { // For IE 8 and earlier versions
+		elem.detachEvent('on'+evName, f);
 	}
-});
+}
