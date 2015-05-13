@@ -50,33 +50,35 @@ function main(event) {
 		handler: function(){view.fstClick();},
 
 		init: function() {
-			var titles = document.getElementsByClassName('titles')[0];
+			this.titles = document.getElementsByClassName('titles')[0];
+			this.htitles = document.getElementsByClassName('title');
+			this.imgBlocks = document.getElementsByClassName('img-w-counter');
+			this.imgs = document.getElementsByClassName('cl-img');
+			this.cntrSpans = document.getElementsByClassName('times');
 			var imgsData = octopus.getImgsData();
 			var numOfImgs = imgsData.length;
 
 			var htmlStr = '';
 			for (var i=0; i<numOfImgs; i++) {
 				htmlStr += "<li><h3 class=\'title\'>"+ imgsData[i].title +
-					"</h3><div class=\'img-w-counter\'><img src=\'"+imgsData[i].url+"\' alt=\'"+imgsData[i].title+"\'><h4 class=\'counter\'>Click the image!</h4></div></li>";
+					"</h3><div class=\'img-w-counter\'><img class=\'cl-img\' src=\'"+imgsData[i].url+"\' alt=\'"+imgsData[i].title+"\'><h4 class=\'counter\'>Click the image!</h4></div></li>";
 			}
-			titles.innerHTML = htmlStr;
+			this.titles.innerHTML = htmlStr;
 
 			for (i=0; i<numOfImgs; i++) {
-				addEListener(titles.getElementsByClassName('title')[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
-				addEListener(titles.getElementsByTagName('img')[i], 'click', view.handler);
+				addEListener(this.htitles[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
+				addEListener(this.imgs[i], 'click', view.handler);
 			}
 		},
 
 		showImg: function(i) {
 			var curr = octopus.getCurrImg();
 			if (curr != i){
-				var htitles = document.getElementsByClassName('title');
-				var imgBlocks = document.getElementsByClassName('img-w-counter');
-				htitles[i].style.fontWeight = "bold";
-				htitles[curr].style.fontWeight = "normal";
-				imgBlocks[curr].style.left = -6000+"px";
+				this.htitles[i].style.fontWeight = "bold";
+				this.htitles[curr].style.fontWeight = "normal";
+				this.imgBlocks[curr].style.left = -6000+"px";
 
-				imgBlocks[i].style.left = 10+"px";
+				this.imgBlocks[i].style.left = 10+"px";
 
 				octopus.setCurrImg(i);
 			}
@@ -84,10 +86,10 @@ function main(event) {
 
 		fstClick: function() {
 			var curr = octopus.getCurrImg();
-			var imgBlock = document.getElementsByClassName('img-w-counter')[curr];
-			var imgEl = imgBlock.getElementsByTagName('img')[0];
+			var imgBlock = this.imgBlocks[curr];
+			var imgEl = this.imgs[curr];
 
-			imgBlock.getElementsByClassName('counter')[0].innerHTML = "You've clicked <span>1</span> times!";
+			imgBlock.getElementsByClassName('counter')[0].innerHTML = "You've clicked <span class='times'>1</span> times!";
 
 			removeEListener(imgEl, 'click', view.handler);
 			addEListener(imgEl, 'click', function(){view.countClicks();});
@@ -96,7 +98,7 @@ function main(event) {
 		countClicks: function() {
 			var curr = octopus.getCurrImg();
 			var count = octopus.getIncrementedClCount();
-			document.getElementsByClassName('img-w-counter')[curr].getElementsByTagName('span')[0].innerHTML = count;
+			this.cntrSpans[curr].innerHTML = count;
 		}
 	};
 
