@@ -11,7 +11,7 @@
 	<![endif]-->
 </head>
 <body>
-	<div>
+	<div class="content">
 		<ul class="titles">
 			<!--
 			<li>
@@ -51,6 +51,21 @@
 			</li>
 			-->
 		</ul>
+	</div>
+	<div class="admin-panel">
+		<input type="password" id="admin-password" placeholder='password' size="16">
+		<form id='fields-to-change'>
+			<label for='title-fld'>Title:</label>
+			<input type="text" id="title-fld">
+			<label for='url-fld'>URL:</label>
+			<input type="text" id="url-fld">
+			<label for='clicks-fld'>#clicks:</label>
+			<input type="text" id="clicks-fld" size="6">
+
+			<button id='cancel'>Cancel</button>
+			<button id='apply'>Apply</button>
+		</form>
+		<button id='admin-btn'>Admin Panel</button>
 	</div>
 <script src="scripts.js"></script>
 </body>

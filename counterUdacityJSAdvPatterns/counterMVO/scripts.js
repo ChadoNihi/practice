@@ -55,6 +55,7 @@ function main(event) {
 			this.imgBlocks = document.getElementsByClassName('img-w-counter');
 			this.imgs = document.getElementsByClassName('cl-img');
 			this.cntrSpans = document.getElementsByClassName('times');
+			this.admPanel = document.getElementsByClassName('admin-panel')[0];
 			var imgsData = octopus.getImgsData();
 			var numOfImgs = imgsData.length;
 
@@ -69,6 +70,7 @@ function main(event) {
 				addEListener(this.htitles[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
 				addEListener(this.imgs[i], 'click', view.handler);
 			}
+			this.admPanel.style.top = document.getElementsByTagName('html')[0].clientHeight-50+'px';
 		},
 
 		showImg: function(i) {
@@ -99,6 +101,10 @@ function main(event) {
 			var curr = octopus.getCurrImg();
 			var count = octopus.getIncrementedClCount();
 			this.cntrSpans[curr].innerHTML = count;
+		},
+
+		adminLogin: function() {
+			var pw = ;
 		}
 	};
 
