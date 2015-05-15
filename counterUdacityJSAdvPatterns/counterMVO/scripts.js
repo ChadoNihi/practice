@@ -17,7 +17,9 @@ function main(event) {
 
 		add: function(obj) {
 			imgBlcksData.push(obj);
-		}
+		},
+
+		passowrd: '123'
 	};
 
 	var octopus = {
@@ -42,7 +44,15 @@ function main(event) {
 		},
 
 		getIncrementedClCount: function() {
-			return ++(model.imgBlcksData[octopus.getCurrImg()].clicks);
+			return ++(this.getImgsData()[this.getCurrImg()].clicks);
+		},
+
+		updateImgData: function(ttl, src, c) {
+			this.getImgsData()[this.getCurrImg()] = {title: ttl, url: src, clicks: c};
+		},
+
+		getPassword: function() {
+			return model.passowrd;
 		}
 	};
 
@@ -56,6 +66,7 @@ function main(event) {
 			this.imgs = document.getElementsByClassName('cl-img');
 			this.cntrSpans = document.getElementsByClassName('times');
 			this.admPanel = document.getElementsByClassName('admin-panel')[0];
+			this.adminForm = document.getElementById('fields-to-change');
 			var imgsData = octopus.getImgsData();
 			var numOfImgs = imgsData.length;
 
@@ -104,7 +115,32 @@ function main(event) {
 		},
 
 		adminLogin: function() {
-			var pw = ;
+			var pwFd = getElementById('admin-password');
+			if (octopus.getPassword()===pwFd.value){
+				var currImgObj = octopus.getImgsData()[octopus.getCurrImg()];
+
+				pwFd.value = '';
+				pwFd.style.backgroundColor = '#fff';
+
+				this.adminForm.style.display = 'inline-block';
+				document.getElementById('title-fld').value = currImgObj.title;
+				document.getElementById('url-fld').value = currImgObj.url;
+				document.getElementById('clicks-fld').value = currImgObj.clicks;
+			} else {
+				this.adminForm.style.display = 'none';
+				pwFd.style.backgroundColor = '#900';
+			}
+		},
+
+		adminSave: function() {
+			var newT = document.getElementById('title-fld').value;
+			var newSrc = document.getElementById('url-fld').value;
+			var newC = parseInt(document.getElementById('clicks-fld').value) || 0;
+			octopus.updateImgData(newT, newSrc, newC);
+		},
+
+		adminClose: function() {
+
 		}
 	};
 
