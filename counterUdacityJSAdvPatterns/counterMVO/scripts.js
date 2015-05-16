@@ -73,13 +73,13 @@ function main(event) {
 			var htmlStr = '';
 			for (var i=0; i<numOfImgs; i++) {
 				htmlStr += "<li><h3 class=\'title\'>"+ imgsData[i].title +
-					"</h3><div class=\'img-w-counter\'><img class=\'cl-img\' src=\'"+imgsData[i].url+"\' alt=\'"+imgsData[i].title+"\'><h4 class=\'counter\'>Click the image!</h4></div></li>";
+					"</h3><div class=\'img-w-counter\'><img class=\'cl-img\' src=\'"+imgsData[i].url+"\' alt=\'"+imgsData[i].title+"\'><h4 class=\'counter\'>Click the image!<span class='times'></span></h4></div></li>";
 			}
 			view.titles.innerHTML = htmlStr;
 
 			for (i=0; i<numOfImgs; i++) {
-				addEListener(this.htitles[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
-				addEListener(this.imgs[i], 'click', view.handler);
+				addEListener(view.htitles[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
+				addEListener(view.imgs[i], 'click', view.handler);
 			}
 			addEListener(document.getElementById('admin-btn'), 'click', view.adminLogin);
 			addEListener(document.getElementById('close'), 'click', view.adminClose);
@@ -90,11 +90,11 @@ function main(event) {
 		showImg: function(i) {
 			var curr = octopus.getCurrImg();
 			if (curr != i){
-				this.htitles[i].style.fontWeight = "bold";
-				this.htitles[curr].style.fontWeight = "normal";
-				this.imgBlocks[curr].style.left = -6000+"px";
+				view.htitles[i].style.fontWeight = "bold";
+				view.htitles[curr].style.fontWeight = "normal";
+				view.imgBlocks[curr].style.left = -6000+"px";
 
-				this.imgBlocks[i].style.left = 10+"px";
+				view.imgBlocks[i].style.left = 10+"px";
 
 				octopus.setCurrImg(i);
 			}
@@ -102,19 +102,19 @@ function main(event) {
 
 		fstClick: function() {
 			var curr = octopus.getCurrImg();
-			var imgBlock = this.imgBlocks[curr];
-			var imgEl = this.imgs[curr];
+			var imgBlock = view.imgBlocks[curr];
+			var imgEl = view.imgs[curr];
 
 			imgBlock.getElementsByClassName('counter')[0].innerHTML = "You've clicked <span class='times'>1</span> times!";
 
 			removeEListener(imgEl, 'click', view.handler);
-			addEListener(imgEl, 'click', function(){view.countClicks();});
+			addEListener(imgEl, 'click', view.countClicks);
 		},
 
 		countClicks: function() {
 			var curr = octopus.getCurrImg();
 			var count = octopus.getIncrementedClCount();
-			this.cntrSpans[curr].innerHTML = count;
+			view.cntrSpans[curr].innerHTML = count;
 		},
 
 		adminLogin: function() {
