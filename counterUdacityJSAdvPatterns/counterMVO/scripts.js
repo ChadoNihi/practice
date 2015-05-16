@@ -66,7 +66,7 @@ function main(event) {
 			this.imgs = document.getElementsByClassName('cl-img');
 			this.cntrSpans = document.getElementsByClassName('times');
 			this.admPanel = document.getElementsByClassName('admin-panel')[0];
-			this.adminForm = document.getElementById('fields-to-change');
+			this.adminForm = document.getElementById('fields-to-change'); //document.forms[0]
 			var imgsData = octopus.getImgsData();
 			var numOfImgs = imgsData.length;
 
@@ -75,12 +75,15 @@ function main(event) {
 				htmlStr += "<li><h3 class=\'title\'>"+ imgsData[i].title +
 					"</h3><div class=\'img-w-counter\'><img class=\'cl-img\' src=\'"+imgsData[i].url+"\' alt=\'"+imgsData[i].title+"\'><h4 class=\'counter\'>Click the image!</h4></div></li>";
 			}
-			this.titles.innerHTML = htmlStr;
+			view.titles.innerHTML = htmlStr;
 
 			for (i=0; i<numOfImgs; i++) {
 				addEListener(this.htitles[i], 'click', (function(iCopy){return function() {view.showImg(iCopy);};})(i));
 				addEListener(this.imgs[i], 'click', view.handler);
 			}
+			addEListener(document.getElementById('admin-btn'), 'click', view.adminLogin);
+			addEListener(document.getElementById('close'), 'click', view.adminClose);
+			addEListener(document.getElementById('apply'), 'click', view.adminApply);
 			this.admPanel.style.top = document.getElementsByTagName('html')[0].clientHeight-50+'px';
 		},
 
@@ -115,32 +118,46 @@ function main(event) {
 		},
 
 		adminLogin: function() {
-			var pwFd = getElementById('admin-password');
+			var pwFd = document.getElementById('admin-password');
 			if (octopus.getPassword()===pwFd.value){
 				var currImgObj = octopus.getImgsData()[octopus.getCurrImg()];
 
 				pwFd.value = '';
 				pwFd.style.backgroundColor = '#fff';
 
-				this.adminForm.style.display = 'inline-block';
+				view.adminForm.style.display = 'inline-block';
 				document.getElementById('title-fld').value = currImgObj.title;
 				document.getElementById('url-fld').value = currImgObj.url;
 				document.getElementById('clicks-fld').value = currImgObj.clicks;
 			} else {
-				this.adminForm.style.display = 'none';
-				pwFd.style.backgroundColor = '#900';
+				view.adminForm.style.display = 'none';
+				pwFd.style.backgroundColor = '#a11';
 			}
 		},
 
-		adminSave: function() {
+		adminApply: function(e) {
 			var newT = document.getElementById('title-fld').value;
 			var newSrc = document.getElementById('url-fld').value;
 			var newC = parseInt(document.getElementById('clicks-fld').value) || 0;
 			octopus.updateImgData(newT, newSrc, newC);
+			e.preventDefault();
+			view.rerenderImg(octopus.getCurrImg());	
 		},
 
-		adminClose: function() {
+		adminClose: function(e) {
+			view.adminForm.style.display = 'none';
+			document.getElementById('title-fld').value = '';
+			document.getElementById('url-fld').value = '';
+			document.getElementById('clicks-fld').value = '';
 
+			e.preventDefault();
+		},
+
+		rerenderImg: function(i) {
+			var imgObj = octopus.getImgsData()[i];
+			view.htitles[i].innerHTML = imgObj.title;
+			view.imgs[i].src = imgObj.url;
+			view.imgBlocks[i].getElementsByClassName('counter')[0].innerHTML = "You've clicked <span class='times'>"+imgObj.clicks+"</span> times!";
 		}
 	};
 

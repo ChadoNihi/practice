@@ -7,7 +7,7 @@
 .titles li:first-child .title {font-weight: bold;}
 
 .admin-panel {width: 100%; position: fixed; background-color: #999; background-color: rgba(80,80,80, 0.2);}
-#fields-to-change {display: inherit; float: right;}
+#fields-to-change {display: none; float: right;}
 #admin-btn {display: block;}
 button, input {margin: 0.5em 0.5em 0}
 input {margin-top: 0;}
