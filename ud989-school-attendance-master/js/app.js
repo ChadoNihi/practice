@@ -44,9 +44,9 @@ $(function() {
 
             for(var i=0; i<view.numOfStRows; i++){
                 var currRow = view.studentRows[i];
-                var currChBoxes = $(currRow).find('td.attend-col>input');
+                var currChBoxes = $('td.attend-col>input', currRow);
                 //var missCol = $(currRow).find('td.missed-col');
-                var name = $(currRow).find(':first-child').text();
+                var name = $(':first-child', currRow).text();
                 var misses = 0;
 
                 for (var j = 0; j < NumOfDays; j++) {
@@ -61,7 +61,7 @@ $(function() {
                         //$(missCol).val($(currRow).find('td.attend-col:checked').length);
                     });
                 }
-                $(currRow).find('td.missed-col').text(misses);
+                $('td.missed-col', currRow).text(misses);
             }
 
             $( window ).unload(function() {
