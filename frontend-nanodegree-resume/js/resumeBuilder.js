@@ -5,8 +5,8 @@ var model = {
 		contacts: {
 			modile: "78-98-77",
 			email: "jt@gmail.com",
-			github: "jt.github.com",
 			twitter: "jt.twitter.com",
+			github: "jt.github.com",
 			location: "sunny AU"
 		},
 		welcomeMessage: "Hey you!.. welcome!",
@@ -37,6 +37,9 @@ var model = {
 	}
 };
 var octopus = {
+	getBio: function() {
+		return model.bio;
+	},
 	init: function() {
 		view.init();
 	}
@@ -52,9 +55,12 @@ var view = {
 	//'private' section
 	_initHeader: function() {
 		var $header = $('#header');
+		var bio = octopus.getBio();
+		var contacts = view._getValues(bio);
+
 		for(var k in HTMLcontactLis){
 			if (HTMLcontactLis.hasOwnProperty(k)) {
-
+				$('#topContacts').append(HTMLcontactLis[k].replace('%data%', contacts[view.i++]));
 			}
 		}
 	},
@@ -66,7 +72,17 @@ var view = {
 	},
 	_initEducation: function() {
 
-	}
+	},
+	_getValues: function(obj) {
+		var vals = [];
+		for(var k in obj){
+			if (obj.hasOwnProperty(k)) {
+				vals.push(obj[k]);
+			}
+		}
+		return vals;
+	},
+	i: 0
 };
 $(function() {
 	octopus.init();
