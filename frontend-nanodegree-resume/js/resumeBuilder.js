@@ -11,7 +11,7 @@ var model = {
 		},
 		welcomeMessage: "Hey you!.. welcome!",
 		skills: ["modern web-dev", "algorithm design", "VR refactoring", "vegan meals"],
-		biopic: "../images/fry.jpg"
+		biopic: "images/fry.jpg"
 	},//---------------------------------------------------------------------------------------------
 	work: {
 		jobs: [
@@ -56,16 +56,30 @@ var view = {
 	_initHeader: function() {
 		var $header = $('#header');
 		var bio = octopus.getBio();
-		var contacts = view._getValues(bio);
+		var contacts = view._getValues(bio.contacts);
+		var HTMLskillsLis="";
+		var numOfSkills = bio.skills.length;
+		var HTMLskillsFullList;
+		var i = 0;
+
+		$header.append(view._replaceDummy(HTMLheaderName, bio.name), view._replaceDummy(HTMLheaderRole, bio.role));
 
 		for(var k in HTMLcontactLis){
 			if (HTMLcontactLis.hasOwnProperty(k)) {
-				$('#topContacts').append(HTMLcontactLis[k].replace('%data%', contacts[view.i++]));
+				$('#topContacts').append(view._replaceDummy(HTMLcontactLis[k], contacts[i++]));
 			}
 		}
+
+		for(i=0; i<numOfSkills; i++) HTMLskillsLis+=view._replaceDummy(HTMLskills, bio.skills[i]);
+		HTMLskillsFullList = HTMLskillsStart.replace('</ul>', HTMLskillsLis)+'</ul>';
+		$header.append(view._replaceDummy(HTMLbioPic, bio.biopic), view._replaceDummy(HTMLwelcomeMsg, bio.welcomeMessage), HTMLskillsFullList);
 	},
 	_initWork: function() {
+		var $workSection = $('#workExperience');
+		var HTMLworkEntries = '';
 
+
+		$workSection.append();
 	},
 	_initProjects: function() {
 
@@ -82,7 +96,9 @@ var view = {
 		}
 		return vals;
 	},
-	i: 0
+	_replaceDummy: function(strToChange, filler) {
+		return strToChange.replace('%data%', filler);
+	}
 };
 $(function() {
 	octopus.init();
