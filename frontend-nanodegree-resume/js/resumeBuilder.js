@@ -21,8 +21,8 @@ var model = {
 	},//---------------------------------------------------------------------------------------------
 	education: {
 		schools: [
-			{name: "IT School", location: "Sydney", degree: "Bach.", majors: ["CS","Web"], dates: 2010, url: "itschool.org"},
-			{name: "Night genius", location: "Dublin", degree: "PhD", majors: ["Robots","VR"], dates: 2014, url: "ng.org"}
+			{name: "IT School", degree: "Bach.", dates: 2010, location: "Sydney", majors: ["CS","Web"]},
+			{name: "Night genius", degree: "PhD", dates: 2014, location: "Dublin", majors: ["Robots","VR"]}
 		],
 		onlineCourses: [
 			{title: "Web design", school: "New-Mex", date: 2013, url: "coursera.org"},
@@ -46,20 +46,26 @@ var octopus = {
 	getProjects: function() {
 		return model.projects;
 	},
+	getEducation: function() {
+		return model.education;
+	},
 	init: function() {
 		view.init();
 	}
 };
 var view = {
 	init: function() {
-		view._initHeader();
+		view._initHeaderNFooter();
 		view._initSection(octopus.getWork().jobs, '#workExperience', HTMLwork);
-		view._initSection(octopus.getProjects().projects, '#projects', HTMLprojects);
-		view._initEducation();
+		view._initSection(octopus.getProjects().projects, '#projects', HTMLproject);
+
+		view._initSection(octopus.getEducation().schools, '#education', HTMLschool);
+		$('#education').append('<h3>Online Classes</h3>');
+		view._initSection(octopus.getEducation().onlineCourses, '#education', HTMLonlineCourse);
 	},
 
 	//'private' section
-	_initHeader: function() {
+	_initHeaderNFooter: function() {
 		var $header = $('#header');
 		var bio = octopus.getBio();
 		var contacts = view._getValues(bio.contacts);
@@ -72,34 +78,13 @@ var view = {
 
 		for(var k in HTMLcontactLis){
 			if (HTMLcontactLis.hasOwnProperty(k)) {
-				$('#topContacts').append(view._replaceDummy(HTMLcontactLis[k], contacts[i++]));
+				$('#topContacts, #footerContacts').append(view._replaceDummy(HTMLcontactLis[k], contacts[i++]));
 			}
 		}
 
 		for(i=0; i<numOfSkills; i++) HTMLskillsLis+=view._replaceDummy(HTMLskills, bio.skills[i]);
 		HTMLskillsFullList = HTMLskillsStart.replace('</ul>', HTMLskillsLis)+'</ul>';
 		$header.append(view._replaceDummy(HTMLbioPic, bio.biopic), view._replaceDummy(HTMLwelcomeMsg, bio.welcomeMessage), HTMLskillsFullList);
-	},/*
-	_initWork: function() {
-		var work = octopus.getWork();
-		var $workSection = $('#workExperience');
-		var HTMLworkFullEntries = '';
-		var numOfJobs = work.jobs.length;
-
-		for(var i=0;i<numOfJobs;i++) {
-			var job = work.jobs[i];
-			var HTMLworkEntryInners = view._replaceDummy(HTMLworkEmployer,job.employer)+view._replaceDummy(HTMLworkTitle,job.title)+view._replaceDummy(HTMLworkDates,job.dates)+view._replaceDummy(HTMLworkLocation,job.location)+view._replaceDummy(HTMLworkDescription,job.description);
-			HTMLworkFullEntries += HTMLworkStart.replace('</div>', HTMLworkEntryInners+'</div>');
-		}
-
-
-		$workSection.append(HTMLworkFullEntries);
-	},*/
-	_initProjects: function() {
-		var projects = octopus.getProjects();
-	},
-	_initEducation: function() {
-
 	},
 	_initSection: function(arrOfObjsWData, idSel, HTMLarr) {
 		var $section = $(idSel);
