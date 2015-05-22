@@ -15,8 +15,8 @@ var model = {
 	},//---------------------------------------------------------------------------------------------
 	work: {
 		jobs: [
-			{employer: "ZZ2", title: "Junior VR uplifter", location: "Paris", dates: "2013-2015", description: "Was resposible for stuff. Was resposible for stuff. Was resposible for stuff."},
-			{employer: "H++", title: "VR architector", location: "remote", dates: "2016-2018", description: "Was resposible for stuff. Was resposible for stuff."}
+			{employer: "ZZ2", title: "Junior VR uplifter", dates: "2013-2015", location: "Paris", description: "Was resposible for stuff. Was resposible for stuff. Was resposible for stuff."},
+			{employer: "H++", title: "VR architector", dates: "2016-2018", location: "remote", description: "Was resposible for stuff. Was resposible for stuff."}
 		]
 	},//---------------------------------------------------------------------------------------------
 	education: {
@@ -31,14 +31,20 @@ var model = {
 	},//---------------------------------------------------------------------------------------------
 	projects: {
 		projects: [
-			{title: "Explore the depth", dates: "2012-2013", description: "Testing with current knowledge. Fun."},
-			{title: "Circle of biases", dates: "2015-2019(hopefully)", description: "Testing with current knowledge. Fun. Testing with current knowledge. Fun. Testing with current knowledge. Fun."}
+			{title: "Explore the depth", dates: "2012-2013", description: "Testing with current knowledge. Fun.", imgsrc: "http://pixabay.com/static/uploads/photo/2014/12/20/09/27/hydroslides-573773_640.jpg"},
+			{title: "Circle of biases", dates: "2015-2019(hopefully)", description: "Testing with current knowledge. Fun. Testing with current knowledge. Fun. Testing with current knowledge. Fun.", imgsrc: "http://pixabay.com/static/uploads/photo/2014/12/20/09/27/hydroslides-573773_640.jpg"}
 		]
 	}
 };
 var octopus = {
 	getBio: function() {
 		return model.bio;
+	},
+	getWork: function() {
+		return model.work;
+	},
+	getProjects: function() {
+		return model.projects;
 	},
 	init: function() {
 		view.init();
@@ -47,8 +53,8 @@ var octopus = {
 var view = {
 	init: function() {
 		view._initHeader();
-		view._initWork();
-		view._initProjects();
+		view._initSection(octopus.getWork().jobs, '#workExperience', HTMLwork);
+		view._initSection(octopus.getProjects().projects, '#projects', HTMLprojects);
 		view._initEducation();
 	},
 
@@ -73,19 +79,46 @@ var view = {
 		for(i=0; i<numOfSkills; i++) HTMLskillsLis+=view._replaceDummy(HTMLskills, bio.skills[i]);
 		HTMLskillsFullList = HTMLskillsStart.replace('</ul>', HTMLskillsLis)+'</ul>';
 		$header.append(view._replaceDummy(HTMLbioPic, bio.biopic), view._replaceDummy(HTMLwelcomeMsg, bio.welcomeMessage), HTMLskillsFullList);
-	},
+	},/*
 	_initWork: function() {
+		var work = octopus.getWork();
 		var $workSection = $('#workExperience');
-		var HTMLworkEntries = '';
+		var HTMLworkFullEntries = '';
+		var numOfJobs = work.jobs.length;
+
+		for(var i=0;i<numOfJobs;i++) {
+			var job = work.jobs[i];
+			var HTMLworkEntryInners = view._replaceDummy(HTMLworkEmployer,job.employer)+view._replaceDummy(HTMLworkTitle,job.title)+view._replaceDummy(HTMLworkDates,job.dates)+view._replaceDummy(HTMLworkLocation,job.location)+view._replaceDummy(HTMLworkDescription,job.description);
+			HTMLworkFullEntries += HTMLworkStart.replace('</div>', HTMLworkEntryInners+'</div>');
+		}
 
 
-		$workSection.append();
-	},
+		$workSection.append(HTMLworkFullEntries);
+	},*/
 	_initProjects: function() {
-
+		var projects = octopus.getProjects();
 	},
 	_initEducation: function() {
 
+	},
+	_initSection: function(arrOfObjsWData, idSel, HTMLarr) {
+		var $section = $(idSel);
+		var HTMLallEntries = '';
+		var numOfEntries = arrOfObjsWData.length;
+		var numOfInners = HTMLarr.length;
+
+		for(var i=0;i<numOfEntries;i++) {
+			var HTMLentryInners = '';
+			for (var j = 1; j<numOfInners; j++) {
+				var entryData = view._getValues(arrOfObjsWData[i]);
+				var k = j-1;
+				HTMLentryInners += view._replaceDummy(HTMLarr[j], entryData[k]);
+			}
+
+			HTMLallEntries += HTMLarr[0].replace('</div>', HTMLentryInners+'</div>');
+		}
+
+		$section.append(HTMLallEntries);
 	},
 	_getValues: function(obj) {
 		var vals = [];
