@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="The HTML5 Herald">
+	<meta name="author" content="SitePoint">
+	<link rel="stylesheet" href="C:\Users\Alexander\Desktop\Study\HTML\templates\reset.css">
+	<link rel="stylesheet" href="counter.css">
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<ul class="nav-list" data-bind="foreach: photoList">
+		<li data-bind="text: $data.title, click: $parent.changePhoto"></li>
+	</ul>
+	<div data-bind="with: currentPhoto">
+		<h2 data-bind="text: title"></h2>
+		<p data-bind="ifnot: numberOfClicks">Click the image!</p>
+		<p data-bind='visible: numberOfClicks'>You've clicked <span data-bind='text: numberOfClicks'>&nbsp;</span> times. <span data-bind='text: currentRank'>&nbsp;</span></p>
+		<img src="" alt="" data-bind='click: $parent.registerClick, attr: {src: url, alt: title}'>
+		<h3>Can you see...</h3>
+		<ul data-bind="foreach: onPicture">
+			<li data-bind="text: $data"></li>
+		</ul>
+	</div>
+
+<script type='text/javascript' src='knockout-3.3.0.js'></script>
+<script src="counter.js"></script>
+</body>
+</html>
