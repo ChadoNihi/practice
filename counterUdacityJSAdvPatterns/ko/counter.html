@@ -14,7 +14,7 @@
 </head>
 <body>
 	<ul class="nav-list" data-bind="foreach: photoList">
-		<li data-bind="text: $data.title, click: $parent.changePhoto"></li>
+		<li data-bind="text: title, click: $parent.changePhoto"></li>
 	</ul>
 	<div data-bind="with: currentPhoto">
 		<h2 data-bind="text: title"></h2>
