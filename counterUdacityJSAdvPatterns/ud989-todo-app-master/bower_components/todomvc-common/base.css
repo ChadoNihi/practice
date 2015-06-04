@@ -223,7 +223,7 @@ label[for='toggle-all'] {
 	appearance: none;
 }
 
-#todo-list li .priority-btn {
+#todo-list li .priority-btn, #new-todo~.priority-btn {
 	display: none;
 	height: auto;
 	position: absolute;
@@ -242,11 +242,11 @@ label[for='toggle-all'] {
 	appearance: none;
 }
 
-#todo-list li:hover .priority-btn {
+#todo-list li:hover .priority-btn, #new-todo~.priority-btn {
 	display: block;
 }
 
-#todo-list li .priority-btn:after {
+#todo-list li .priority-btn:after, #new-todo~.priority-btn:after {
 	content: '!';
 }
 
@@ -280,18 +280,13 @@ label[for='toggle-all'] {
 #todo-list li.completed label {
 	color: #a9a9a9;
 	text-decoration: line-through;
+
+#todo-list li:not(.completed) label.priority2 {
+	color: #ffcc44 !important;
 }
 
-/*#todo-list li.completed label:after {
-	content: "--done";
-}*/
-
-#todo-list li.priority:not(.completed) label {
-	color: #d66;
-}
-
-#todo-list li.priority .priority-btn:after {
-	color: #d66;
+#todo-list li:not(.completed) label.priority3 {
+	color: #ff1111 !important;
 }
 
 #todo-list li .destroy,
