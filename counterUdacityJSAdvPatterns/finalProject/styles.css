@@ -1,1 +1,5 @@
-html, body, #map-canvas { height: 100%;}
+html {height: 100%;}
+body {display : flex; flex-direction: column; height: 100%; overflow: hidden;}
+input[name='srch-bar'] {width: 70%}
+#map-canvas {flex: 1 1 100%;}
+form>button[type='submit'] {margin: 0 1em;}

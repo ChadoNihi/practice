@@ -13,6 +13,16 @@
 	<![endif]-->
 </head>
 <body>
+	<form data-bind="submit: srchForMarker">
+		<input type="text" name="srch-bar">
+		<span> or </span>
+		<select name="select-list" data-bind="options: markerList,
+                       optionsText: 'title',
+                       value: 'title',
+                       optionsCaption: 'select from the list...'">
+		</select>
+		<button type="submit">Show on the map</button>
+	</form>
 	<div id="map-canvas"></div>
 
 <script type="text/javascript"

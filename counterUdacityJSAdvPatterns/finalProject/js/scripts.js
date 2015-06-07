@@ -3,9 +3,9 @@ var initializeMap = function() {
 	    center: { lat: -20, lng: 100},
 	    zoom: 2
 	  };
-	var map = new google.maps.Map(document.getElementById('map-canvas'),
+
+	map = new google.maps.Map(document.getElementById('map-canvas'),
 			mapOptions);
-	console.log("in initmap");
 
 	initialMarkers = [
 		{
@@ -31,6 +31,7 @@ var initializeMap = function() {
 	];
 };
 
+var map;
 var initialMarkers;
 
 var MapViewModel = function() {
@@ -44,6 +45,21 @@ var MapViewModel = function() {
 			title: markObj.title
   		}));
 	});
+
+	this.srchForMarker = function(formEl) {
+		var selectEl = formEl["select-list"];
+		if ( selectEl.options[selectEl.selectedIndex].index )
+			map.panTo(this.markerList()[ selectEl.options[selectEl.selectedIndex].index-1 ].getPosition());
+		else {
+			var patt = new RegExp(formEl["srch-bar"].value, 'i');
+			for(var i=0, len=this.markerList().length; i<len; i++) {
+				if ( patt.test(this.markerList()[i].title) ) {
+					map.panTo(this.markerList()[i].getPosition());
+					return;
+				}
+			}
+		}
+	}
 };
 
 google.maps.event.addDomListener(window, 'load', function(){initializeMap(); ko.applyBindings(new MapViewModel());});
