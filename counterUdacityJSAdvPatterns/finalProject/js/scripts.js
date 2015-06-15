@@ -39,27 +39,43 @@ var MapViewModel = function() {
 	this.markerList = ko.observableArray([]);
 
 	initialMarkers.forEach(function(markObj){
-		self.markerList.push( new google.maps.Marker({
+		var marker = new google.maps.Marker({
 			position: markObj.position,
 			map: markObj.map,
 			title: markObj.title
-  		}));
+  		});
+  		var contentString
+		var infowindow = new google.maps.InfoWindow({
+			content: contentString
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map,marker);
+		});
+
+		self.markerList.push(marker);
 	});
 
 	this.srchForMarker = function(formEl) {
 		var selectEl = formEl["select-list"];
-		if ( selectEl.options[selectEl.selectedIndex].index )
+		if ( selectEl.options[selectEl.selectedIndex].index ) {
 			map.panTo(this.markerList()[ selectEl.options[selectEl.selectedIndex].index-1 ].getPosition());
+			map.setZoom(4);
+		}
 		else {
 			var patt = new RegExp(formEl["srch-bar"].value, 'i');
 			for(var i=0, len=this.markerList().length; i<len; i++) {
 				if ( patt.test(this.markerList()[i].title) ) {
 					map.panTo(this.markerList()[i].getPosition());
+					map.setZoom(4);
 					return;
 				}
 			}
 		}
-	}
+	};
+
+	this.resetSelected = function() {
+		document.getElementsByTagName('option')[0].selected = true;
+	};
 };
 
 google.maps.event.addDomListener(window, 'load', function(){initializeMap(); ko.applyBindings(new MapViewModel());});

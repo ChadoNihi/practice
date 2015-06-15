@@ -14,7 +14,7 @@
 </head>
 <body>
 	<form data-bind="submit: srchForMarker">
-		<input type="text" name="srch-bar">
+		<input type="text" name="srch-bar" data-bind="event: { focus: resetSelected }">
 		<span> or </span>
 		<select name="select-list" data-bind="options: markerList,
                        optionsText: 'title',
