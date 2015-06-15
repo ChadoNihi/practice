@@ -44,16 +44,33 @@ var MapViewModel = function() {
 			map: markObj.map,
 			title: markObj.title
   		});
-  		var contentString
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
-		});
+
+		google.maps.event.addListener(marker, 'click', (function(markerCopy){return function() {self.showWeather(markerCopy);};})(marker));
 
 		self.markerList.push(marker);
 	});
+
+	this.showWeather = function (marker) {
+		var infowindow = new google.maps.InfoWindow({
+			content: '<i>...measuring temperature... please wait</i>'
+		});
+		var xmlhttp=new XMLHttpRequest();
+
+		infowindow.open(map,marker);
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				var temp = JSON.parse(xmlhttp.responseText).weather.curren_weather[0].temp;
+				infowindow.content = '<p>Temp. outside: <strong>'+temp+' °C</strong></p>';
+			}
+			else if (xmlhttp.readyState==4)
+				infowindow.content = '<p><strong>TERRIBLE FAILUREAAA</strong></p>';
+		}
+		xmlhttp.open("GET","http://www.myweather2.com/developer/forecast.ashx?uac=GMkjCZ7LKN&output=json&query="+marker.getPosition().lat()+","+marker.getPosition().lng(),true);
+		xmlhttp.send();
+	};
 
 	this.srchForMarker = function(formEl) {
 		var selectEl = formEl["select-list"];
