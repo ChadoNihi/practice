@@ -1,3 +1,27 @@
+function createCORSRequest(method, url) {
+	var xhr = new XMLHttpRequest();
+	if ("withCredentials" in xhr) {
+
+		// Check if the XMLHttpRequest object has a "withCredentials" property.
+		// "withCredentials" only exists on XMLHTTPRequest2 objects.
+		xhr.open(method, url, true);
+
+	} else if (typeof XDomainRequest != "undefined") {
+
+		// Otherwise, check if XDomainRequest.
+		// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+		xhr = new XDomainRequest();
+		xhr.open(method, url);
+
+	} else {
+
+		// Otherwise, CORS is not supported by the browser.
+		xhr = null;
+
+	}
+	return xhr;
+}
+
 var initializeMap = function() {
 	var mapOptions = {
 	    center: { lat: -20, lng: 100},
@@ -54,21 +78,21 @@ var MapViewModel = function() {
 		var infowindow = new google.maps.InfoWindow({
 			content: '<i>...measuring temperature... please wait</i>'
 		});
-		var xmlhttp=new XMLHttpRequest();
+		var xmlhttp=createCORSRequest("GET","http://www.myweather2.com/developer/forecast.ashx?uac=GMkjCZ7LKN&output=json&query="+marker.getPosition().lat()+","+marker.getPosition().lng(),true);
 
 		infowindow.open(map,marker);
 
-		xmlhttp.onreadystatechange=function()
+		xmlhttp.onload=function()
 		{
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-				var temp = JSON.parse(xmlhttp.responseText).weather.curren_weather[0].temp;
-				infowindow.content = '<p>Temp. outside: <strong>'+temp+' °C</strong></p>';
-			}
-			else if (xmlhttp.readyState==4)
-				infowindow.content = '<p><strong>TERRIBLE FAILUREAAA</strong></p>';
+			var temp = JSON.parse(xmlhttp.responseText).weather.curren_weather[0].temp;
+			infowindow.content = '<p>Temp. outside: <strong>'+temp+' °C</strong></p>';
 		}
-		xmlhttp.open("GET","http://www.myweather2.com/developer/forecast.ashx?uac=GMkjCZ7LKN&output=json&query="+marker.getPosition().lat()+","+marker.getPosition().lng(),true);
+		xmlhttp.onerror=function () {
+			infowindow.content = '<p><strong>TERRIBLE FAILUREAAA</strong></p>';
+		}
+		xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+		xmlhttp.setRequestHeader('Access-Control-Allow-Methods', 'GET,POST,PUT');
+		xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
 		xmlhttp.send();
 	};
 
